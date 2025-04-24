@@ -1,5 +1,5 @@
-from .block import Block
 import time
+from .block import Block
 
 class Blockchain:
     difficulty = 2

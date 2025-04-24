@@ -1,6 +1,5 @@
 from blockchain.blockchain import Blockchain
 from wallet.transaction import Transaction
-import json
 
 blockchain = Blockchain()
 
@@ -13,12 +12,12 @@ while True:
         amount = input("Amount: ")
         tx = Transaction(sender, recipient, amount)
         blockchain.add_transaction(tx.to_dict())
-        print("Transaction added!")
+        print("✅ Transaction added.")
     elif choice == "2":
-        blockchain.mine()
-        print("Block mined.")
+        index = blockchain.mine()
+        print(f"⛏️ Block #{index} mined.")
     elif choice == "3":
         for block in blockchain.chain:
-            print(block.__dict__)
+            print(vars(block))
     else:
         break
