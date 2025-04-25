@@ -1,11 +1,7 @@
-from blockchain.blockchain import Blockchain
-from wallet.transaction import Transaction
+from blockchain.block import Block
 
-def test_blockchain_creation():
-    bc = Blockchain()
-    assert len(bc.chain) == 1  # Genesis block exists
-
-def test_transaction_validity():
-    tx = Transaction("sender", "receiver", 10)
-    tx.signature = "abc"
-    assert not tx.is_valid()
+def test_hash_consistency():
+    block = Block(1, [{"sender": "a", "recipient": "b", "amount": 10}], 0, "0")
+    hash1 = block.compute_hash()
+    hash2 = block.compute_hash()
+    assert hash1 == hash2

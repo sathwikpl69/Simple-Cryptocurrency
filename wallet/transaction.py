@@ -11,7 +11,7 @@ class Transaction:
         return {
             'sender': self.sender,
             'recipient': self.recipient,
-            'amount': self.amount
+            'amount': f"{self.amount} CEC"
         }
 
     def sign_transaction(self, private_key):
