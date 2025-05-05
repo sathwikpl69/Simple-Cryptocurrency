@@ -3,33 +3,17 @@ import json
 import time
 
 class Block:
-    """
-    A class representing a single block in the CEC blockchain.
-    """
     def __init__(self, index, transactions, timestamp, previous_hash, nonce=0):
         self.index = index
-        self.transactions = self._format_transactions(transactions)
+        self.transactions = transactions  # a list of dicts
         self.timestamp = timestamp
         self.previous_hash = previous_hash
         self.nonce = nonce
-        self.hash = self.compute_hash()
-
-    def _format_transactions(self, transactions):
-        """
-        Formats transaction amounts to include 'CEC' currency unit if not already formatted.
-        """
-        formatted = []
-        for tx in transactions:
-            tx_copy = tx.copy()
-            if isinstance(tx_copy.get('amount'), (int, float)):
-                tx_copy['amount'] = f"{tx_copy['amount']} CEC"
-            formatted.append(tx_copy)
-        return formatted
+        self.hash = self.compute_hash()  # auto-generate hash
 
     def compute_hash(self):
         """
-        Generates a SHA-256 hash of the block’s contents.
-        This hash acts as a unique identifier (like a fingerprint) for the block.
+        Return the SHA-256 hash of the block contents as a unique block ID.
         """
         block_data = {
             'index': self.index,
@@ -43,8 +27,7 @@ class Block:
 
     def to_dict(self):
         """
-        Returns the block as a dictionary.
-        Useful for logging, storage, or sending across the network.
+        Serialize block for network communication or storage.
         """
         return {
             'index': self.index,

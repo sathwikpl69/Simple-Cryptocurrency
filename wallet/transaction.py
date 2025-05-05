@@ -1,5 +1,5 @@
 import json
-from ecdsa import VerifyingKey, SigningKey, SECP256k1
+from ecdsa import SigningKey, VerifyingKey
 
 class Transaction:
     def __init__(self, sender, recipient, amount):
@@ -9,18 +9,17 @@ class Transaction:
 
     def to_dict(self):
         return {
-            'sender': self.sender,
-            'recipient': self.recipient,
-            'amount': f"{self.amount} CEC"
+            "sender": self.sender,
+            "recipient": self.recipient,
+            "amount": self.amount
         }
 
-    def sign_transaction(self, private_key):
-        sk = SigningKey.from_pem(private_key)
+    def sign_transaction(self, private_key_file):
+        sk = SigningKey.from_pem(open(private_key_file).read())
         message = json.dumps(self.to_dict()).encode()
         return sk.sign(message)
 
     @staticmethod
-    def verify_transaction(transaction_dict, signature, public_key):
-        vk = VerifyingKey.from_pem(public_key)
-        message = json.dumps(transaction_dict).encode()
-        return vk.verify(signature, message)
+    def verify_signature(transaction_dict, signature, public_key_file):
+        vk = VerifyingKey.from_pem(open(public_key_file).read())
+        return vk.verify(signature, json.dumps(transaction_dict).encode())
